@@ -12,6 +12,13 @@ add_proxy_settings() {
   sudo echo "$bash_http_proxy\n$bash_https_proxy" >> ~/.bashrc
 }
 
+# Checkers 
+
+# CMake checker
+cmake_exists() {
+  type cmake &> /dev/null;
+}
+
 # Git checker
 git_exists() {
   type git &> /dev/null;
@@ -19,11 +26,17 @@ git_exists() {
 
 
 ###################################################################
-#                     Main Module                                 #
+#                         Main Module                             #
 ###################################################################
 if git_exists; then
   echo "Git already installed on system"
 else
   sudo apt-get install -y git
+fi
+
+if cmake_exists; then
+  echo "CMake already installed on system"
+else
+  sudo apt-get install -y cmake
 fi
 add_proxy_settings
