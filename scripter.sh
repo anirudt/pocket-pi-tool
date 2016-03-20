@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Adds Proxy settings for the Pi
 add_proxy_settings() {
@@ -24,19 +24,71 @@ git_exists() {
   type git &> /dev/null;
 }
 
+# Vim checker
+vim_exists() {
+  type vim &> /dev/null;
+}
+
+display() {
+  echo "*Welcome to the Rapberry Pi install portal*";
+  echo "Press the sequence of numbers for the required tasks:";
+  echo "1-> Update proxy settings";
+  echo "2-> Install Git";
+  echo "3-> Install Vim";
+  echo "4-> Clone custom Git repository";
+  echo "5-> Install CMake, OpenCV";
+  echo "Usage:";
+  echo "$ ./scripter.sh 123";
+  echo "for running 1, 2, and 3.";
+}
+
+main() {
+  options=$1
+  echo $options
+  if [[ "$options" == *a* ]]; then
+    add_proxy_settings
+    echo "Proxy settings successfully updated."
+  fi
+  if [[ "$options" == *b* ]]; then
+    if git_exists; then
+      echo "Git is already installed on system"
+    else
+      sudo apt-get install -y git
+    fi
+  fi
+  if [[ "$options" == *c* ]]; then
+    if vim_exists; then
+      echo "Vim is already installed on system"
+    else
+      sudo apt-get install -y vim
+    fi
+  fi
+  if [[ "$options" == *d* ]]; then
+    if [[ -d "btp" ]]; then
+      if [[ -d "btp/.git" ]]; then
+        cd btp; git status;
+        cd ../
+      else
+        # Do something here
+        mkdir btp1; cd btp1;
+        git clone https://anirudt_bit@bitbucket.org/anirudt_bit/btp.git;
+        cd ../
+      fi
+    else
+      git clone https://anirudt_bit@bitbucket.org/anirudt_bit/btp.git;
+    fi
+  fi
+  if [[ "$options" == *e* ]]; then
+    if cmake_exists; then
+      echo "CMake is already installed on system"
+    else
+      sudo apt-get install -y cmake
+    fi
+  fi
+}
 
 ###################################################################
 #                         Main Module                             #
 ###################################################################
-if git_exists; then
-  echo "Git already installed on system"
-else
-  sudo apt-get install -y git
-fi
-
-if cmake_exists; then
-  echo "CMake already installed on system"
-else
-  sudo apt-get install -y cmake
-fi
-add_proxy_settings
+options=$1
+main $options
