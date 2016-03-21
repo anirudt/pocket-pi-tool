@@ -32,11 +32,12 @@ vim_exists() {
 display() {
   echo "*Welcome to the Rapberry Pi install portal*";
   echo "Press the sequence of numbers for the required tasks:";
-  echo "1-> Update proxy settings";
-  echo "2-> Install Git";
-  echo "3-> Install Vim";
-  echo "4-> Clone custom Git repository";
-  echo "5-> Install CMake, OpenCV";
+  echo "a-> Update proxy settings";
+  echo "b-> Install Git";
+  echo "c-> Install Vim";
+  echo "d-> Clone custom Git repository [BTP]";
+  echo "e-> Install CMake, OpenCV";
+  echo "f-> Install PiPan package"
   echo "Usage:";
   echo "$ ./scripter.sh 123";
   echo "for running 1, 2, and 3.";
@@ -44,7 +45,6 @@ display() {
 
 main() {
   options=$1
-  echo $options
   if [[ "$options" == *a* ]]; then
     add_proxy_settings
     echo "Proxy settings successfully updated."
@@ -64,8 +64,8 @@ main() {
     fi
   fi
   if [[ "$options" == *d* ]]; then
-    if [[ -d "btp" ]]; then
-      if [[ -d "btp/.git" ]]; then
+    if [ -d btp ]; then
+      if [ -d btp/.git ]; then
         cd btp; git status;
         cd ../
       else
@@ -84,6 +84,20 @@ main() {
     else
       sudo apt-get install -y cmake
     fi
+  fi
+  if [[ "$options" == *f* ]]; then
+    if [ -d btp/pi-pan ]; then
+      cp -r btp/pi-pan/ pi-pan/
+      cd btp/pi-pan/
+      sudo ./install-pi-pan.bash;
+      cd ../../
+    else
+      echo "PiPan not installed as part of BTP package, 
+            please install BTP package first"
+    fi
+  fi
+  if [[ "$options" == *h* ]]; then
+    display
   fi
 }
 
