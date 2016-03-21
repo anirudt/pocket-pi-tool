@@ -4,12 +4,12 @@
 * Make a directory for the custom code, and git clone inside that repo.
   * Make the ```\img``` directory as well.
 * Install Vim [MUST]
+* Make a directory for the pan-tilt code, and clone that repo.
+  * Run the install script, ```install-pi-pan.bash```
 
 ## Pending:
 * Enable the camera, by using the /boot/config.txt line [MUST]
 * Installables for OpenCV
 * Make a directory for the OpenCV code, and git clone inside that repo.
 * Build the OpenCV code [which will take some time.]
-* Make a directory for the pan-tilt code, and clone that repo.
-  * Run the install script, ```install-pi-pan.bash```
   * Also, in case Git throws an error regarding certificates, disable checking for SSL.
